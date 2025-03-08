@@ -33,3 +33,6 @@ octave-workspace
 #other
 DeepMIMOv2/DeepMIMO_dataset/*
 DeepMIMOv2/Raytracing_scenarios/*
+!DeepMIMOv2/DeepMIMO_dataset/.gitkeep
+!DeepMIMOv2/Raytracing_scenarios/.gitkeep
+
