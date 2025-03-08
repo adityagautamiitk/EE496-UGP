@@ -31,8 +31,13 @@ codegen/
 octave-workspace
 
 #other
-DeepMIMOv2/DeepMIMO_dataset/*
-DeepMIMOv2/Raytracing_scenarios/*
-!DeepMIMOv2/DeepMIMO_dataset/.gitkeep
-!DeepMIMOv2/Raytracing_scenarios/.gitkeep
+DeepMIMOv2_O1_3p5/DeepMIMO_dataset/*
+DeepMIMOv2_O1_3p5/Raytracing_scenarios/*
+!DeepMIMOv2_O1_3p5/DeepMIMO_dataset/.gitkeep
+!DeepMIMOv2_O1_3p5/Raytracing_scenarios/.gitkeep
+
+DeepMIMOv2_O1_28/DeepMIMO_dataset/*
+DeepMIMOv2_O1_28/Raytracing_scenarios/*
+!DeepMIMOv2_O1_28/DeepMIMO_dataset/.gitkeep
+!DeepMIMOv2_O1_28/Raytracing_scenarios/.gitkeep
 
