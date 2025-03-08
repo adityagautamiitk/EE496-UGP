@@ -29,3 +29,7 @@ codegen/
 
 # Octave session info
 octave-workspace
+
+#other
+DeepMIMOv2/DeepMIMO_dataset/
+DeepMIMOv2/Raytracing_scenarios/
