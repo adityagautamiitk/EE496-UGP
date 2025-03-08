@@ -72,4 +72,4 @@ params.num_OFDM = 32;                % Number of OFDM subcarriers
 params.OFDM_sampling_factor = 1;      % The constructed channels will be calculated only at the sampled subcarriers (to reduce the size of the dataset)
 params.OFDM_limit = 32;               % Only the first params.OFDM_limit subcarriers will be considered
 
-params.saveDataset = 0;               % 0: Will return the dataset without saving it (highly recommended!)
+params.saveDataset = 1;               % 0: Will return the dataset without saving it (highly recommended!)
