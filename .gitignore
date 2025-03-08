@@ -31,5 +31,5 @@ codegen/
 octave-workspace
 
 #other
-DeepMIMOv2/DeepMIMO_dataset/
-DeepMIMOv2/Raytracing_scenarios/
+DeepMIMOv2/DeepMIMO_dataset/*
+DeepMIMOv2/Raytracing_scenarios/*
