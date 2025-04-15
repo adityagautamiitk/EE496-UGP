@@ -76,18 +76,43 @@ for fileIdx = 1:length(inputFilePaths)
         freqNotation = 'unknown';
     end
 
+    % Debug output for verification
+    fprintf('Processing file: %s with detected frequency: %s\n', inputFilePath, freqNotation);
+    fprintf('Number of users: %d, Antennas: %d, Subcarriers: %d\n', numUsers, numAntennaElements, numSubcarriers);
+
+    % Verify if we have non-zero channel data
+    fprintf('Channel data summary - Max value: %f, Min value: %f\n', max(abs(channels(:))), min(abs(channels(:))));
+
     outputFilePath = fullfile(outputFolder, ['dataset_' freqNotation '_processed.mat']);
 
     % Create variable name based on frequency for uniqueness
     varName = ['data_' freqNotation];
 
     % Create output structure with unique variable name
-    eval([varName ' = struct();']);
-    eval([varName '.channels = channels;']);
-    eval([varName '.user_locations = user_locations;']);
+    % Avoid using eval for better error handling
+    rawData = struct();
+    rawData.channel = channels;
+    rawData.userLoc = user_locations;
 
-    % Save the processed data with the unique variable name
-    eval(['save(''' outputFilePath ''', ''' varName ''');']);
+    % Save with specific variable name using structured approach
+    if strcmp(freqNotation, '3p5')
+        data_3p5 = rawData;
+        save(outputFilePath, 'data_3p5');
+    elseif strcmp(freqNotation, '28')
+        data_28 = rawData;
+        save(outputFilePath, 'data_28');
+    else
+        data_unknown = rawData;
+        save(outputFilePath, 'data_unknown');
+    end
+
+    % Verify the saved file exists and has content
+    fileInfo = dir(outputFilePath);
+    if isempty(fileInfo)
+        warning('Failed to save file: %s', outputFilePath);
+    else
+        fprintf('Saved file size: %.2f KB\n', fileInfo.bytes/1024);
+    end
 
     fprintf('File %d/%d: Data processed and saved to: %s as variable %s\n', ...
         fileIdx, length(inputFilePaths), outputFilePath, varName);
