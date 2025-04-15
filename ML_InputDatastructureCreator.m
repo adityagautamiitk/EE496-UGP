@@ -1,9 +1,28 @@
-function [] = ML_InputDatastructureCreator(inputFilePaths, outputFolder)
+function [] = ML_InputDatastructureCreator(varargin)
 % This function converts DeepMIMO dataset format to the format required for main.m
 %
 % Inputs:
 %   inputFilePaths - Cell array of paths to original .mat files or a single string
 %   outputFolder - Path to output folder (should be 'root/Input-DataStructures')
+
+% Check if the function is called without arguments
+if nargin == 0
+    % Define default paths
+    sub6_file = '/home/adityagautam/Documents/GitHub/EE496-UGP/DeepMIMOv2_O1_3p5/DeepMIMO_dataset/dataset_3p5.mat';
+    mmwave_file = '/home/adityagautam/Documents/GitHub/EE496-UGP/DeepMIMOv2_O1_3p5/DeepMIMO_dataset/dataset_28.mat';
+    inputFilePaths = {sub6_file, mmwave_file};
+
+    % Define output folder
+    outputFolder = fullfile(fileparts(mfilename('fullpath')), '..', 'Input-DataStructures');
+elseif nargin == 1
+    inputFilePaths = varargin{1};
+    outputFolder = fullfile(fileparts(mfilename('fullpath')), '..', 'Input-DataStructures');
+elseif nargin == 2
+    inputFilePaths = varargin{1};
+    outputFolder = varargin{2};
+else
+    error('Invalid number of input arguments. Expected 0, 1, or 2 arguments.');
+end
 
 % Handle single file input
 if ischar(inputFilePaths)
@@ -79,17 +98,4 @@ for fileIdx = 1:length(inputFilePaths)
 end
 
 fprintf('All files processed successfully!\n');
-
-% If running this file directly, execute with these parameters
-if strcmp(mfilename, 'ML_InputDatastructureCreator')
-    % Define default paths - update these with your actual paths
-    sub6_file = '/home/adityagautam/Documents/GitHub/EE496-UGP/DeepMIMOv2_O1_3p5/DeepMIMO_dataset/dataset_3p5.mat';
-    mmwave_file = '/home/adityagautam/Documents/GitHub/EE496-UGP/DeepMIMOv2_O1_3p5/DeepMIMO_dataset/dataset_28.mat';
-
-    % Define output folder
-    output_dir = fullfile(fileparts(mfilename('fullpath')), '..', 'Input-DataStructures');
-
-    % Call the function with both files
-    ML_InputDatastructureCreator({sub6_file, mmwave_file}, output_dir);
-end
 end
