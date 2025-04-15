@@ -9,17 +9,13 @@ function [] = ML_InputDatastructureCreator(varargin)
 if nargin == 0
     % Define default paths
     sub6_file = '/home/adityagautam/Documents/GitHub/EE496-UGP/DeepMIMOv2_O1_3p5/DeepMIMO_dataset/dataset_3p5.mat';
-    mmwave_file = '/home/adityagautam/Documents/GitHub/EE496-UGP/DeepMIMOv2_O1_3p5/DeepMIMO_dataset/dataset_28.mat';
+    mmwave_file = '/home/adityagautam/Documents/GitHub/EE496-UGP/DeepMIMOv2_O1_28/DeepMIMO_dataset/dataset_28.mat';
+    outputFolder = '/home/adityagautam/Documents/GitHub/EE496-UGP/Input-DataStructures';
     inputFilePaths = {sub6_file, mmwave_file};
-
-    % Define output folder
-    outputFolder = fullfile(fileparts(mfilename('fullpath')), '..', 'Input-DataStructures');
 elseif nargin == 1
     inputFilePaths = varargin{1};
-    outputFolder = fullfile(fileparts(mfilename('fullpath')), '..', 'Input-DataStructures');
 elseif nargin == 2
     inputFilePaths = varargin{1};
-    outputFolder = varargin{2};
 else
     error('Invalid number of input arguments. Expected 0, 1, or 2 arguments.');
 end
