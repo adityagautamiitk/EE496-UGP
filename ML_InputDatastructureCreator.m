@@ -1,4 +1,4 @@
-function [] = ML_InputDatastructureCreator(inputFilePaths, outputFolder)
+function [] = InputDatastructureCreator(inputFilePaths, outputFolder)
 % This function converts DeepMIMO dataset format to the format required for main.m
 %
 % Inputs:
@@ -49,20 +49,47 @@ for fileIdx = 1:length(inputFilePaths)
         user_locations(:, i) = DeepMIMO_dataset{1}.user{i}.loc';
     end
 
-    % Create output structure
-    outputData = struct();
-    outputData.channels = channels;
-    outputData.user_locations = user_locations;
-
     % Generate output filename from input filename
     [~, baseFileName, ~] = fileparts(inputFilePath);
-    outputFilePath = fullfile(outputFolder, [baseFileName '_processed.mat']);
 
-    % Save the processed data
-    save(outputFilePath, 'outputData');
+    % Extract frequency notation (3p5 or 28) from filename
+    if contains(baseFileName, '3p5')
+        freqNotation = '3p5';
+    elseif contains(baseFileName, '28')
+        freqNotation = '28';
+    else
+        freqNotation = 'unknown';
+    end
 
-    fprintf('File %d/%d: Data processed and saved to: %s\n', fileIdx, length(inputFilePaths), outputFilePath);
+    outputFilePath = fullfile(outputFolder, ['dataset_' freqNotation '_processed.mat']);
+
+    % Create variable name based on frequency for uniqueness
+    varName = ['data_' freqNotation];
+
+    % Create output structure with unique variable name
+    eval([varName ' = struct();']);
+    eval([varName '.channels = channels;']);
+    eval([varName '.user_locations = user_locations;']);
+
+    % Save the processed data with the unique variable name
+    eval(['save(''' outputFilePath ''', ''' varName ''');']);
+
+    fprintf('File %d/%d: Data processed and saved to: %s as variable %s\n', ...
+        fileIdx, length(inputFilePaths), outputFilePath, varName);
 end
 
 fprintf('All files processed successfully!\n');
+end
+
+% If running this file directly, execute with these parameters
+if strcmp(mfilename, 'ML_InputDatastructureCreator')
+    % Define default paths - update these with your actual paths
+    sub6_file = '/home/adityagautam/Documents/GitHub/EE496-UGP/DeepMIMOv2_O1_3p5/DeepMIMO_dataset/dataset_3p5.mat';
+    mmwave_file = '/home/adityagautam/Documents/GitHub/EE496-UGP/DeepMIMOv2_O1_3p5/DeepMIMO_dataset/dataset_28.mat';
+
+    % Define output folder
+    output_dir = fullfile(fileparts(mfilename('fullpath')), '..', 'Input-DataStructures');
+
+    % Call the function with both files
+    InputDatastructureCreator({sub6_file, mmwave_file}, output_dir);
 end
