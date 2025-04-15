@@ -96,11 +96,9 @@ for fileIdx = 1:length(inputFilePaths)
 
     % Save with specific variable name using structured approach
     if strcmp(freqNotation, '3p5')
-        data_3p5 = rawData;
-        save(outputFilePath, 'data_3p5');
+        save(outputFilePath, 'rawData');
     elseif strcmp(freqNotation, '28')
-        data_28 = rawData;
-        save(outputFilePath, 'data_28');
+        save(outputFilePath, 'rawData');
     else
         data_unknown = rawData;
         save(outputFilePath, 'data_unknown');
