@@ -1,4 +1,4 @@
-function [] = InputDatastructureCreator(inputFilePaths, outputFolder)
+function [] = ML_InputDatastructureCreator(inputFilePaths, outputFolder)
 % This function converts DeepMIMO dataset format to the format required for main.m
 %
 % Inputs:
@@ -79,7 +79,6 @@ for fileIdx = 1:length(inputFilePaths)
 end
 
 fprintf('All files processed successfully!\n');
-end
 
 % If running this file directly, execute with these parameters
 if strcmp(mfilename, 'ML_InputDatastructureCreator')
@@ -91,5 +90,6 @@ if strcmp(mfilename, 'ML_InputDatastructureCreator')
     output_dir = fullfile(fileparts(mfilename('fullpath')), '..', 'Input-DataStructures');
 
     % Call the function with both files
-    InputDatastructureCreator({sub6_file, mmwave_file}, output_dir);
+    ML_InputDatastructureCreator({sub6_file, mmwave_file}, output_dir);
+end
 end
