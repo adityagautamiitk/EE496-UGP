@@ -107,7 +107,7 @@ for ant = 1:length(num_ant_mm)% number of antennas to loop over
 			'verboseFrequency', options.verboseFrequency,...
 			'Plots',options.progPlot);
 
-		gpuDevice(options.gpuInd)
+		% gpuDevice(options.gpuInd)
 		[trainedNet, trainInfo] = trainNetwork(dataset.inpTrain, dataset.labelTrain,net,trainingOpt);
 		options.valAccuracy(ant,p) = trainInfo.ValidationAccuracy(end);
 
