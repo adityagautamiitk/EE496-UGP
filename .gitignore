@@ -41,3 +41,7 @@ DeepMIMOv2_O1_28/Raytracing_scenarios/*
 !DeepMIMOv2_O1_28/DeepMIMO_dataset/.gitkeep
 !DeepMIMOv2_O1_28/Raytracing_scenarios/.gitkeep
 
+Input-DataStructures/*
+
+
+
