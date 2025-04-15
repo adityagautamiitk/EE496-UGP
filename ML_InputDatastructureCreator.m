@@ -96,12 +96,12 @@ for fileIdx = 1:length(inputFilePaths)
 
     % Save with specific variable name using structured approach
     if strcmp(freqNotation, '3p5')
-        save(outputFilePath, 'rawData');
+        save(outputFilePath, 'rawData', '-v7.3');
     elseif strcmp(freqNotation, '28')
-        save(outputFilePath, 'rawData');
+        save(outputFilePath, 'rawData', '-v7.3');
     else
         data_unknown = rawData;
-        save(outputFilePath, 'data_unknown');
+        save(outputFilePath, 'data_unknown', '-v7.3');
     end
 
     % Verify the saved file exists and has content
