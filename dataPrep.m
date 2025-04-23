@@ -15,13 +15,13 @@ d = {};
 loc = {};
 labels = {};
 for i = 1:len% Normalize data
-	load(fileName(i).name)
-	x = rawData.channel;
+    load(fileName(i).name)
+    x = rawData.channel;
     loc(i) = {rawData.userLoc};
-    if strcmp( options.case, 'NLOS' ) 
+    if strcmp( options.case, 'NLOS' )
         labels(i) = {rawData.labels};
     end
-	d(i) = {x};
+    d(i) = {x};
 end
 
 dataset.data = d;
@@ -89,22 +89,30 @@ for i = 1:options.numOfVal
     Y(1,1,:,i) = reshape(y, [numel(y),1]);
 end
 if options.noisyInput
-    % Noise power
-    NF=5;% Noise figure at the base station
-    Pr=30;
-    BW=options.bandWidth*1e9; % System bandwidth in Hz
-    noise_power_dB=-204+10*log10(BW/options.numSub)+NF; % Noise power in dB
-    noise_power=10^(.1*(noise_power_dB));% Noise power
-    Pn_r=(noise_power/options.dataStats(1)^2)/2;
-    Pn=Pn_r/(10^(.1*(options.transPower-Pr)));
-    % Adding noise
-    fprintf(['Corrupting channel measurements with ' num2str(Pn) '-variance Gaussian\n'])
-    noise_samples = sqrt(Pn)*randn(size(X));% Zero-mean unity-variance noise
+    % Calculate fixed reference noise power
+    NF = 5;              % Noise figure at the base station
+    Pr_ref = 30;         % Reference power in dBm
+    BW = options.bandWidth*1e9; % System bandwidth in Hz
+    noise_power_dB = -204 + 10*log10(BW/options.numSub) + NF; % Noise power in dB
+    noise_power = 10^(.1*(noise_power_dB));  % Noise power in linear scale
+
+    % Calculate normalized noise power (constant across all tx powers)
+    Pn = (noise_power/options.dataStats(1)^2)/2;
+
+    % Scale the input signals according to transmission power
+    % Higher tx_power means stronger signal compared to noise
+    power_scale = 10^(.1*(options.transPower-Pr_ref)/2);  % Scale factor in amplitude
+    X = X * power_scale;
+    Y = Y * power_scale;
+
+    % Add fixed noise to the scaled signals
+    fprintf('Using transmission power of %g dBm with constant noise variance %g\n', options.transPower, Pn)
+    noise_samples = sqrt(Pn)*randn(size(X));  % Zero-mean unity-variance noise
     X = X + noise_samples;
     noise_samples = sqrt(Pn)*randn(size(Y));
     Y = Y + noise_samples;
 else
-    fprintf('Clean channel measurements')
+    fprintf('Clean channel measurements\n')
 end
 dataset.inpTrain = X;
 dataset.inpVal = Y;
@@ -116,8 +124,8 @@ dataset.inpVal = Y;
 
 highTrain = highTrain(1:options.numAnt(2),1:options.numSub,:)/options.dataStats(2);
 highVal = highVal(1:options.numAnt(2),1:options.numSub,:)/options.dataStats(2);
-dataset.highFreqChTrain = highTrain;% 
-dataset.highFreqChVal = highVal;% 
+dataset.highFreqChTrain = highTrain;%
+dataset.highFreqChVal = highVal;%
 W = options.codebook;
 value_set = 1:size(W,2);
 for i = 1:options.numOfTrain
