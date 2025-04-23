@@ -121,11 +121,24 @@ dataset.inpVal = Y;
 % Prepare outputs:
 % ----------------
 
-
 highTrain = highTrain(1:options.numAnt(2),1:options.numSub,:)/options.dataStats(2);
 highVal = highVal(1:options.numAnt(2),1:options.numSub,:)/options.dataStats(2);
 dataset.highFreqChTrain = highTrain;%
 dataset.highFreqChVal = highVal;%
+
+if options.noisyInput
+    % Apply the same power scaling to mmWave channels
+    power_scale = 10^(.1*(options.transPower-Pr_ref)/2);
+    highTrain = highTrain * power_scale;
+    highVal = highVal * power_scale;
+
+    % Add proportional noise to mmWave channels
+    noise_samples_train = sqrt(Pn)*randn(size(highTrain));
+    noise_samples_val = sqrt(Pn)*randn(size(highVal));
+    highTrain = highTrain + noise_samples_train;
+    highVal = highVal + noise_samples_val;
+end
+
 W = options.codebook;
 value_set = 1:size(W,2);
 for i = 1:options.numOfTrain
